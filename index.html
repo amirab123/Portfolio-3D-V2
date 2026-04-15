@@ -1,1 +1,239 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aya Belgharat | AI Portfolio</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #020617;
+  color: white;
+  overflow-x: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+section, nav, footer { position: relative; z-index: 10; }
+
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(59,130,246,0.3);
+}
+
+.skill {
+  background: rgba(59,130,246,0.15);
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* CHAT */
+#chat-box {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  display: none;
+  z-index: 999;
+}
+
+#chat-messages {
+  height: 200px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- NAV -->
+<nav class="fixed w-full bg-black/50 backdrop-blur-md flex justify-between px-6 py-4">
+  <h1 class="text-blue-300 font-bold">Aya Belgharat</h1>
+  <div class="space-x-4 text-sm text-gray-300">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="h-screen flex items-center justify-center text-center">
+  <div class="glass p-10 rounded-xl">
+    <h1 class="text-4xl text-blue-300 font-bold">AI Engineer</h1>
+    <p>Computer Vision • Deep Learning • IoT • R&D</p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="max-w-4xl mx-auto p-10">
+  <h2 class="text-blue-300 text-2xl mb-4">About</h2>
+  <div class="glass p-5 rounded-xl text-sm">
+    AI Engineer specialized in Computer Vision, Deep Learning, IoT systems and semiconductor inspection.
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="max-w-4xl mx-auto p-10">
+  <h2 class="text-blue-300 text-2xl mb-4">Skills</h2>
+
+  <div class="grid md:grid-cols-3 gap-3">
+    <div class="skill">Python</div>
+    <div class="skill">Deep Learning</div>
+    <div class="skill">Computer Vision</div>
+    <div class="skill">TensorFlow</div>
+    <div class="skill">PyTorch</div>
+    <div class="skill">IoT (ESP32)</div>
+    <div class="skill">OCR</div>
+    <div class="skill">Streamlit</div>
+    <div class="skill">R&D</div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="max-w-4xl mx-auto p-10">
+  <h2 class="text-blue-300 text-2xl mb-4">Experience</h2>
+
+  <div class="space-y-3">
+    <div class="glass p-4 rounded-xl">IMEC – AI Research (Wafer Defect Detection)</div>
+    <div class="glass p-4 rounded-xl">DRÄXLMAIER – IoT Engineer</div>
+    <div class="glass p-4 rounded-xl">STEG – Industrial Automation</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="max-w-4xl mx-auto p-10">
+  <h2 class="text-blue-300 text-2xl mb-4">Projects</h2>
+
+  <div class="grid md:grid-cols-2 gap-3">
+    <div class="glass p-4 rounded-xl">FactuBot AI (OCR + Chatbot)</div>
+    <div class="glass p-4 rounded-xl">ECG IoT Monitoring</div>
+    <div class="glass p-4 rounded-xl">Waste Classification AI</div>
+    <div class="glass p-4 rounded-xl">Smart Parking AI</div>
+  </div>
+</section>
+
+<!-- 💬 CHAT BUTTON -->
+<button id="chat-btn"
+class="fixed bottom-5 right-5 bg-blue-500 w-14 h-14 rounded-full">
+💬
+</button>
+
+<!-- CHAT BOX -->
+<div id="chat-box" class="glass p-3 rounded-xl">
+  <div class="text-blue-300 font-bold mb-2">AI Assistant</div>
+  <div id="chat-messages"></div>
+  <input id="chat-input" class="w-full p-2 text-black mt-2" placeholder="Ask..." />
+</div>
+
+<!-- 🌌 THREE.JS BACKGROUND -->
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({canvas:document.getElementById("bg"),alpha:true});
+
+renderer.setSize(innerWidth, innerHeight);
+camera.position.z = 200;
+
+const geo = new THREE.BufferGeometry();
+const pts = [];
+
+for(let i=0;i<4000;i++){
+  pts.push((Math.random()-0.5)*1000);
+  pts.push((Math.random()-0.5)*1000);
+  pts.push((Math.random()-0.5)*1000);
+}
+
+geo.setAttribute("position", new THREE.Float32BufferAttribute(pts,3));
+
+const stars = new THREE.Points(geo, new THREE.PointsMaterial({color:0x3b82f6,size:1}));
+scene.add(stars);
+
+function animate(){
+  requestAnimationFrame(animate);
+  stars.rotation.y += 0.0005;
+  renderer.render(scene,camera);
+}
+animate();
+</script>
+
+<!-- 🤖 CHATBOT (OpenAI API BACKEND REQUIRED) -->
+<script>
+const btn = document.getElementById("chat-btn");
+const box = document.getElementById("chat-box");
+const input = document.getElementById("chat-input");
+const messages = document.getElementById("chat-messages");
+
+btn.onclick = () => {
+  box.style.display = box.style.display === "block" ? "none" : "block";
+};
+
+function add(text,type){
+  const div = document.createElement("div");
+  div.className = "p-2 my-1 rounded " + (type==="user"?"bg-blue-500":"bg-gray-200 text-black");
+  div.innerText = text;
+  messages.appendChild(div);
+}
+
+async function send(msg){
+  const res = await fetch("http://localhost:3000/chat", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:msg})
+  });
+
+  const data = await res.json();
+  return data.reply;
+}
+
+input.addEventListener("keypress", async (e)=>{
+  if(e.key==="Enter"){
+    add(input.value,"user");
+    const reply = await send(input.value);
+    add(reply,"bot");
+    input.value="";
+  }
+});
+</script>
+
+<!-- FOOTER -->
+<footer class="mt-20 border-t border-blue-500/30 bg-black/40 backdrop-blur-md">
+  <div class="max-w-6xl mx-auto px-6 py-10 flex justify-between text-sm text-gray-300">
+    <div>
+      <p class="text-blue-300 font-bold">Aya Belgharat</p>
+      <p>AI & Machine Learning Engineer</p>
+    </div>
+
+    <div>
+      <p>📍 Sousse, Tunisia</p>
+      <p>✉️ aya.belgharat.ing@gmail.com</p>
+    </div>
+
+    <div>
+      <p>© 2026 Portfolio AI</p>
+      <p>Built with Three.js + Tailwind + OpenAI</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
