@@ -12,7 +12,7 @@ A modern **AI Research Portfolio Website** built with:
 
 ## 🌐 Live Demo
 👉 GitHub Pages:  
-https://YOUR_USERNAME.github.io/YOUR_REPO/
+https://amirab123.github.io/Portfolio-3D-V2/
 
 👉 Backend (Chatbot API):  
 https://YOUR-BACKEND.onrender.com/chat
